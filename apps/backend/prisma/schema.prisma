@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId        String    @id @default(uuid())
+  firstName     String?
+  lastName      String?
+  nickname      String
+  email         String    @unique
+  password      String
+  phoneNumber   String?
+  ownerOf       Flat?     @relation("owner")
+  ownerOfId     String?   @unique
+  flatId        String
+  flat          Flat      @relation(fields: [flatId], references: [flatId])
+  myExpenses    Expense[] @relation("expenseBy")
+  otherExpenses Expense[]
+  updatedAt     DateTime? @updatedAt
+  createdAt     DateTime? @default(now())
+
+  @@map("users")
+}
+
+model Flat {
+  flatId    String    @id @default(uuid())
+  name      String
+  owner     User      @relation("owner", fields: [ownerId], references: [userId])
+  ownerId   String    @unique
+  flatmates User[]
+  expenses  Expense[]
+  updatedAt DateTime? @updatedAt
+  createdAt DateTime? @default(now())
+
+  @@map("flats")
+}
+
+model Expense {
+  expenseId   String    @id @default(uuid())
+  flatId      String
+  flat        Flat      @relation(fields: [flatId], references: [flatId])
+  expenseBy   User      @relation("expenseBy", fields: [expenseById], references: [userId])
+  expenseById String
+  expenseFor  User[]
+  amount      Float
+  updatedAt   DateTime? @updatedAt
+  createdAt   DateTime? @default(now())
+
+  @@map("expenses")
+}

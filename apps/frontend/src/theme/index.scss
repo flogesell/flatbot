@@ -1,0 +1,120 @@
+@import './_variables';
+@import './menu';
+@import './auth';
+
+html,
+body,
+div#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.content {
+  padding: 30px;
+  width: 100%;
+  .MuiGrid-container {
+    margin-left: 0;
+    margin-top: 0;
+  }
+  .page-header {
+    font-weight: 600;
+    margin-bottom: 50px;
+    font-size: 32px;
+    color: $dark-grey;
+    &.icon {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      & svg {
+        font-size: 32px;
+      }
+    }
+  }
+  .back {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 10px;
+    & .sub-path {
+      color: $grey;
+    }
+  }
+  .pagemodule-item {
+    .module-title {
+      margin-bottom: 25px;
+      font-size: 24px;
+      color: $dark-grey;
+    }
+    .pagemodule {
+      border-radius: 7px;
+      background-color: #f8f8f8;
+      padding: 15px;
+      &.no-background {
+        background-color: transparent;
+        padding: 0;
+      }
+    }
+  }
+}
+
+.addButton {
+  position: fixed !important;
+  background-color: $green !important;
+  color: white !important;
+  bottom: 30px;
+  right: 30px;
+  &:hover {
+    background-color: $green-accent !important;
+    color: white;
+  }
+}
+
+.createForm {
+  .dialog-title {
+    padding-left: 0;
+  }
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 500px;
+  button {
+    background-color: $green !important;
+    color: white !important;
+    &:hover {
+      background-color: $green-accent !important;
+      color: white;
+    }
+  }
+}
+
+.subpagenav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 50px;
+  .subpagenavitem {
+    border-radius: 5px;
+    &.active {
+      background-color: $green !important;
+      color: white !important;
+      &:hover {
+        background-color: $green-accent !important;
+        color: white;
+      }
+    }
+  }
+}

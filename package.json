@@ -1,0 +1,32 @@
+{
+  "name": "tab-teamportal",
+  "version": "0.0.1",
+  "description": "flatbot",
+  "scripts": {
+    "install:backend": "cd apps/backend && test -f package.json && npm install",
+    "install:frontend": "cd apps/frontend && test -f package.json && npm install",
+    "build:frontend": "cd apps/frontend && test -f package.json && npm run build",
+    "build:backend": "cd apps/backend && test -f package.json && npm run build",
+    "build": "npm run build:frontend && npm run build:backend",
+    "postinstall": "npm run install:backend && npm run install:frontend",
+    "dev:backend": "cd apps/backend && npm run start:dev",
+    "dev:frontend": "cd apps/frontend && npm run dev",
+    "start": "npm run install:backend && npm run install:frontend && env ENV=DEV npm run dev:backend && env ENV=DEV npm run dev:frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flogesell/flatbot.git"
+  },
+  "author": "Flo Gesell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flogesell/flatbot/issues"
+  },
+  "homepage": "https://github.com/flogesell/flatbot#readme",
+  "devDependencies": {
+    "husky": "^8.0.1"
+  },
+  "dependencies": {
+    "pretty-quick": "^3.1.3"
+  }
+}

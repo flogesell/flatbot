@@ -1,0 +1,10 @@
+{
+  "tabWidth": 2,
+  "useTabs": false,
+  "parserOptions": {
+    "project": [
+      "./apps/backend/tsconfig.json",
+      "./apps/frontend/tsconfig.json"
+    ]
+   }
+}

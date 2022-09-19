@@ -1,0 +1,41 @@
+@import './_variables';
+
+.login-page {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  .auth-header {
+    margin-top: 0;
+    font-size: 2em;
+    font-weight: 500;
+    padding-bottom: 25px;
+    color: var(--grey);
+  }
+  .auth-input,
+  .auth-button {
+    margin-bottom: 15px;
+  }
+  .auth-options {
+    display: flex;
+    flex-direction: column;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+  }
+  .auth-logo {
+    display: flex;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    max-width: 75px;
+  }
+  .auth-button {
+    background-color: $green;
+    &:hover {
+      background-color: $green-accent;
+    }
+    
+  }
+}
