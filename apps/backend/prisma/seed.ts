@@ -4,29 +4,46 @@ import * as bcrypt from 'bcrypt';
 let hashedPswd: string;
 const prisma = new PrismaClient();
 
-fuc
-bcrypt.genSalt(10, function (err, salt) {
-  bcrypt.hash('password', salt, function (err, hash) {
-    hashedPswd = hash;
-  });
-});
+const testPassword = 'test';
 
 async function main() {
-  const exampleFlat = await prisma.flat.create({
+  const hash = await bcrypt.hash(testPassword, 10);
+  const flo = await prisma.user.create({
     data: {
-      flatId: '8e3399e6-1d94-11ec-9621-0242ac130002',
-      name: 'Flos Testwohnung',
-      flatmates: {
-        create: {
-          email: 'test@test.de',
-          password: await hashedPswd,
-          nickname: 'Liz',
-          firstName: 'Liz',
-          lastName: 'Test',
+      firstName: 'Flo',
+      lastName: 'Test',
+      nickname: 'flo',
+      email: 'test@test.de',
+      password: hash,
+    },
+  });
+
+  const liz = await prisma.user.create({
+    data: {
+      firstName: 'Liz',
+      lastName: 'Test',
+      nickname: 'liz',
+      email: 'test2@test.de',
+      password: hash,
+    },
+  });
+  const flats = await prisma.flat.create({
+    data: {
+      name: 'Flo & Liz Butze',
+      owner: {
+        connect: {
+          userId: flo.userId,
         },
       },
-      owner: {
-        connect: { email: 'test@test.de' },
+      flatmates: {
+        connect: [
+          {
+            userId: flo.userId,
+          },
+          {
+            userId: liz.userId,
+          },
+        ],
       },
     },
   });

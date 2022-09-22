@@ -20,10 +20,9 @@ model User {
   password      String
   phoneNumber   String?
   ownerOf       Flat?     @relation("owner")
-  ownerOfId     String?   @unique
-  flatId        String
-  flat          Flat      @relation(fields: [flatId], references: [flatId])
-  myExpenses    Expense[] @relation("expenseBy")
+  flatId        String?
+  flat          Flat?      @relation(fields: [flatId], references: [flatId])
+  paidFor    Expense[] @relation("paidBy")
   otherExpenses Expense[]
   updatedAt     DateTime? @updatedAt
   createdAt     DateTime? @default(now())
@@ -34,13 +33,13 @@ model User {
 model Flat {
   flatId    String    @id @default(uuid())
   name      String
-  owner     User      @relation("owner", fields: [ownerId], references: [userId])
-  ownerId   String    @unique
+  owner     User?      @relation("owner", fields: [ownerId], references: [userId])
+  ownerId   String?    @unique
   flatmates User[]
   expenses  Expense[]
   updatedAt DateTime? @updatedAt
   createdAt DateTime? @default(now())
-
+  
   @@map("flats")
 }
 
@@ -48,8 +47,8 @@ model Expense {
   expenseId   String    @id @default(uuid())
   flatId      String
   flat        Flat      @relation(fields: [flatId], references: [flatId])
-  expenseBy   User      @relation("expenseBy", fields: [expenseById], references: [userId])
-  expenseById String
+  paidBy   User      @relation("paidBy", fields: [paidById], references: [userId])
+  paidById String
   expenseFor  User[]
   amount      Float
   updatedAt   DateTime? @updatedAt
