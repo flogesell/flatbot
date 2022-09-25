@@ -12,7 +12,7 @@ datasource db {
 }
 
 model User {
-  userId        String    @id @default(uuid())
+  userId        String    @id @unique @default(uuid())
   firstName     String?
   lastName      String?
   nickname      String
@@ -21,8 +21,8 @@ model User {
   phoneNumber   String?
   ownerOf       Flat?     @relation("owner")
   flatId        String?
-  flat          Flat?      @relation(fields: [flatId], references: [flatId])
-  paidFor    Expense[] @relation("paidBy")
+  flat          Flat?     @relation(fields: [flatId], references: [flatId])
+  paidFor       Expense[] @relation("paidBy")
   otherExpenses Expense[]
   updatedAt     DateTime? @updatedAt
   createdAt     DateTime? @default(now())
@@ -31,28 +31,45 @@ model User {
 }
 
 model Flat {
-  flatId    String    @id @default(uuid())
+  flatId    String    @id @unique @default(uuid())
   name      String
-  owner     User?      @relation("owner", fields: [ownerId], references: [userId])
-  ownerId   String?    @unique
+  owner     User?     @relation("owner", fields: [ownerId], references: [userId])
+  ownerId   String?   @unique
   flatmates User[]
   expenses  Expense[]
+  tags      Tag[]
   updatedAt DateTime? @updatedAt
   createdAt DateTime? @default(now())
-  
+
   @@map("flats")
 }
 
 model Expense {
-  expenseId   String    @id @default(uuid())
-  flatId      String
-  flat        Flat      @relation(fields: [flatId], references: [flatId])
-  paidBy   User      @relation("paidBy", fields: [paidById], references: [userId])
-  paidById String
-  expenseFor  User[]
-  amount      Float
-  updatedAt   DateTime? @updatedAt
-  createdAt   DateTime? @default(now())
+  expenseId  String    @id @unique @default(uuid())
+  date       DateTime
+  tag        Tag?      @relation(fields: [tagId], references: [tagId])
+  tagId      String?
+  amount     Float
+  flatId     String
+  flat       Flat      @relation(fields: [flatId], references: [flatId])
+  paidBy     User      @relation("paidBy", fields: [paidById], references: [userId])
+  paidById   String
+  expenseFor User[]
+  updatedAt  DateTime? @updatedAt
+  createdAt  DateTime? @default(now())
 
   @@map("expenses")
+}
+
+model Tag {
+  tagId     String    @id @unique @default(uuid())
+  name      String
+  flatId    String
+  flat      Flat      @relation(fields: [flatId], references: [flatId])
+  updatedAt DateTime? @updatedAt
+  createdAt DateTime? @default(now())
+  Expense   Expense[]
+
+  @@index([tagId], name: "tagId")
+  @@map("tags")
 }

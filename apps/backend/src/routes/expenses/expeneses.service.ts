@@ -7,14 +7,15 @@ import {
   FormatLogin,
   LoginUserDto,
   UpdatePasswordDto,
-  UserWithoutPassword,
 } from '../../validation/users.user.dto';
-import { User } from '@prisma/client';
+import { Expense, User } from '@prisma/client';
 import { compare, hash } from 'bcrypt';
+import { CreateExpenese } from 'src/validation/expenese.types';
+import { UserWithoutPassword } from 'src/validation/flat.types';
 
 @Injectable()
-export class UserService {
-  loggerContext = 'UserService';
+export class ExpenesesService {
+  loggerContext = 'ExpenesesService';
 
   constructor(
     private readonly errorService: ErrorService,
@@ -22,47 +23,95 @@ export class UserService {
     private prisma: PrismaService,
   ) {}
 
-  async getProfile({ userId }: { userId: string }): Promise<any> {
-    const user = await this.prisma.user.findUnique({
-      where: { userId },
-      select: {
-        ...UserWithoutPassword,
-        flat: {
+  async getAllExpeneses({ userId }: { userId: string }): Promise<any> {
+    const flat = await this.prisma.flat.findFirst({
+      where: {
+        OR: [{ ownerId: userId }, { flatmates: { some: { userId: userId } } }],
+      },
+      include: {
+        expenses: {
           include: {
-            flatmates: {
+            tag: true,
+            paidBy: {
+              select: UserWithoutPassword,
+            },
+            expenseFor: {
               select: UserWithoutPassword,
             },
           },
         },
       },
     });
-    if (!user) {
+    if (!flat) {
       throw new HttpException('user_does_not_exist', HttpStatus.CONFLICT);
     }
-    return user;
+    return flat.expenses;
   }
 
-  async create(userDto: CreateUserDto): Promise<any> {
-    const userInDb = await this.prisma.user.findFirst({
-      where: { email: userDto.email },
+  async getSpecific(
+    { userId }: { userId: string },
+    expenseId,
+  ): Promise<Expense> {
+    const expense = await this.prisma.expense.findFirst({
+      where: {
+        expenseId,
+        OR: [
+          { flat: { ownerId: userId } },
+          { flat: { flatmates: { some: { userId: userId } } } },
+        ],
+      },
+      orderBy: {
+        date: 'desc',
+      },
+      include: {
+        paidBy: true,
+        expenseFor: true,
+        tag: true,
+      },
     });
-    if (userInDb) {
-      throw new HttpException('user_already_exist', HttpStatus.CONFLICT);
+    if (!expense) {
+      throw new HttpException('expense_does_not_exist', HttpStatus.CONFLICT);
     }
-    return await this.prisma.user.create({
+    return expense;
+  }
+
+  async createExpense(
+    { userId }: { userId: string },
+    createExpenese: CreateExpenese,
+  ): Promise<any> {
+    const flat = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          { flat: { ownerId: userId } },
+          { flat: { flatmates: { some: { userId: userId } } } },
+        ],
+      },
+    });
+    if (flat) {
+      throw new HttpException('no_flat_found', HttpStatus.CONFLICT);
+    }
+    return await this.prisma.expense.create({
       data: {
-        ...userDto,
-        password: await hash(userDto.password, 10),
+        date: createExpenese.date,
         flat: {
-          create: {
-            name: userDto.firstName,
-            owner: {
-              connect: {
-                email: userDto.email,
-              },
-            },
+          connect: {
+            flatId: flat.flatId,
           },
         },
+        tag: {
+          connect: {
+            tagId: createExpenese.tag,
+          },
+        },
+        paidBy: {
+          connect: {
+            userId: createExpenese.paidBy,
+          },
+        },
+        expenseFor: {
+          connect: createExpenese.expenseFor.map((id) => ({ userId: id })),
+        },
+        amount: createExpenese.amount,
       },
     });
   }

@@ -14,16 +14,16 @@ import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/providers/guards/jwt-auth-guard';
 import { UpdatePasswordDto } from 'src/validation/users.user.dto';
 
-@ApiTags('users')
+@ApiTags('user')
 @ApiVersion('v1')
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async getUsers(@Query() query: any): Promise<any> {
-    return await this.userService.getUsers(query);
+  public async getProfile(@Request() req) {
+    return await this.userService.getProfile(req.user);
   }
 
   @Put('update/password')

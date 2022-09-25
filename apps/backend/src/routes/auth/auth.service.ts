@@ -42,8 +42,8 @@ export class AuthService {
     };
   }
 
-  private _createToken({ email, userId }): any {
-    const userObject: JwtPayload = { email, userId };
+  private _createToken({ email, userId, flatId }): any {
+    const userObject: JwtPayload = { email, userId, flatId };
     const token = this.jwtService.sign(userObject);
     return {
       tokens: {

@@ -3,13 +3,13 @@ import {
   Controller,
   HttpException,
   HttpStatus,
+  Logger,
   Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from '../../validation/users.user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiVersion } from '../../providers/guards';
-import { PrismaService } from 'src/providers/services/prisma.service';
 import { RegistrationStatus } from 'src/validation/auth.auth.dto';
 
 @ApiTags('auth')
