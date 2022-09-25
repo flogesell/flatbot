@@ -1,9 +1,8 @@
 import { VisibilityOff, Visibility } from '@mui/icons-material';
-import { Alert, Button, Divider, Grid, Snackbar, OutlinedInput, Typography, IconButton, InputAdornment, InputLabel } from '@mui/material';
+import { Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../assets/images/logo/flatbot_logo.png';
-import { RegisterUserDto } from '../models/user.model.ts';
 import { useRegisterMutation } from '../services/auth.service';
 import { useAuthStore } from '../store';
 

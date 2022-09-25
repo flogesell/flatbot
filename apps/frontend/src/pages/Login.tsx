@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
-import { Button, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import Logo from '../assets/images/logo/flatbot_logo.png';
 import { LoginResponse } from '../models/user.model.ts';
 import { useLoginMutation } from '../services/auth.service';
 import { useAuthStore } from '../store';
+import { Box, Button, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
+import { CheckIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { InputAdornment } from '@mui/material';
 
 interface LoginState {
   password: string;
@@ -65,59 +67,43 @@ export const Login = () => {
 
   return (
     <div className="login-page">
-      <Grid container spacing={2} className="login-grid">
-        <Grid item md={4}></Grid>
-        <Grid item md={4} className="login-container">
+      <Box className="login-grid">
+        <Box className="login-container">
           <form className="form">
             <img src={Logo} className="auth-logo" />
-            <Typography className="auth-header">Login</Typography>
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <OutlinedInput
-              id="email"
-              fullWidth
-              type="text"
-              onChange={(event) => setValues({ ...values, username: event.target.value })}
-              className="auth-input"
-            />
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <OutlinedInput
-              id="password"
-              fullWidth
-              type={values.showPassword ? 'text' : 'password'}
-              onChange={(event) => setValues({ ...values, password: event.target.value })}
-              className="auth-input"
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+            <Text className="auth-header">Login</Text>
+            <Input id="email" type="text" onChange={(event) => setValues({ ...values, username: event.target.value })} className="auth-input" />
+            <InputGroup>
+              <Input
+                id="password"
+                type={values.showPassword ? 'text' : 'password'}
+                onChange={(event) => setValues({ ...values, password: event.target.value })}
+                className="auth-input"
+              />
+              <InputRightElement
+                children={
+                  <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                    {values.showPassword ? <ViewIcon /> : <ViewOffIcon />}
                   </IconButton>
-                </InputAdornment>
-              }
-            />
+                }
+              />
+            </InputGroup>
             <div className="auth-options">
               <Link to={'/auth/register'}>Noch kein Konto? Jetzt registrieren</Link>
               <Link to={'/reset-password'}>Passwort vergessen?</Link>
             </div>
             <Button
               type="button"
-              color="primary"
-              size="large"
               onClick={handleLogin}
-              variant="contained"
-              fullWidth
+              width="100%"
               disabled={values.errorMessage.length > 0 || !values.username || !values.password}
               className="auth-button"
             >
               Log in
             </Button>
           </form>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </div>
   );
 };

@@ -24,9 +24,20 @@
   },
   "homepage": "https://github.com/flogesell/flatbot#readme",
   "devDependencies": {
+    "@types/passport-jwt": "^3.0.6",
+    "@types/passport-local": "^1.0.34",
     "husky": "^8.0.1"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.3.4",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@nestjs/jwt": "^9.0.0",
+    "@nestjs/passport": "^9.0.0",
+    "framer-motion": "^7.3.6",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pretty-quick": "^3.1.3"
   }
 }

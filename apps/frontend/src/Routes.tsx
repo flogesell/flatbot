@@ -5,16 +5,17 @@ import { Dashboard } from './pages/Dashboard';
 import Private from './utils/PrivateRoute';
 import { Settings } from './pages/Settings';
 import { Register } from './pages/Register';
+import { Statistics } from './pages/Statistics';
 
 const Routes = () => {
   return (
     <RouterRoutes>
-      <Route path="auth/">
+      <Route path="auth">
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
       </Route>
-      <Route path="settings" element={<Private Component={Settings} />}></Route>
-
+      <Route path="settings" element={<Private Component={Settings} />} />
+      <Route path="statistic" element={<Private Component={Statistics} />} />
       <Route path="" element={<Private Component={Dashboard} />}></Route>
     </RouterRoutes>
   );

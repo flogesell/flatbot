@@ -1,9 +1,18 @@
+import { Flat } from './flat.model';
+
 export type User = {
-  email: string;
-  name: string;
   userId: string;
-  defaultCompanyId: string;
-  companies: Company[];
+  email: string;
+  firstName: string;
+  lastName: string;
+  flat: Flat;
+};
+
+export type UserInfo = {
+  userId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
 };
 
 export type Company = {

@@ -3,42 +3,36 @@ import DnsIcon from '@mui/icons-material/Dns';
 import GroupIcon from '@mui/icons-material/Group';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import { MenuCategory } from '../models/menu.type';
+import { Dashboard, Home, ShowChart } from '@mui/icons-material';
+import { MenuCategory, MenuLink } from '../models/menu.type';
 
-export const menuPoints: MenuCategory[] = [
+export const menuPoints: MenuLink[] = [
   {
-    categoryname: '',
-    menulinks: [
-      {
-        name: 'Dashboard',
-        path: '/',
-        icon: <HomeIcon />
-      },
-      {
-        name: 'Settings',
-        path: '/settings',
-        icon: <SettingsIcon />
-      }
-    ]
+    name: 'Dashboard',
+    path: '/',
+    icon: <HomeIcon />
   },
   {
-    categoryname: '%COMPANYNAME%',
-    menulinks: [
-      {
-        name: 'Cluster',
-        path: '/cluster',
-        icon: <AccountTreeIcon />
-      },
-      {
-        name: 'Server',
-        path: '/server',
-        icon: <DnsIcon />
-      },
-      {
-        name: 'Employees',
-        path: '/company',
-        icon: <GroupIcon />
-      }
-    ]
+    name: 'Settings',
+    path: '/settings',
+    icon: <SettingsIcon />
+  }
+];
+
+export const tabs: MenuLink[] = [
+  {
+    name: 'Dashboard',
+    path: '/',
+    icon: <Home />
+  },
+  {
+    name: 'Statistics',
+    path: '/statistic',
+    icon: <ShowChart />
+  },
+  {
+    name: 'Settings',
+    path: '/settings',
+    icon: <SettingsIcon />
   }
 ];

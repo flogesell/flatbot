@@ -1,10 +1,12 @@
+import { FunctionComponent, PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import React, { FunctionComponent, PropsWithChildren } from 'react';
-import { Box, createTheme, ThemeProvider } from '@mui/material';
+import { Box, ChakraProvider, TabList, Tabs, VStack } from '@chakra-ui/react';
 import { useAuthStore } from './store';
 import Routes from './Routes';
-import { iqontrolTheme } from './theme/IQontrolTheme';
+import { TabButton } from './components/menu/TabButton';
+import { tabs } from './utils/Menustructure';
+import { TabMenu } from './components/menu/TabMenu';
 
 const queryClient = new QueryClient();
 
@@ -13,24 +15,18 @@ const Providers: FunctionComponent<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={iqontrolTheme}>
+        <ChakraProvider>
           <BrowserRouter>
-            <Box sx={{ display: 'flex', height: '100vh', position: 'relative' }}>
-              {isAuth && (
-                <>
-                  <div className="content">
-                    <Routes />
-                  </div>
-                </>
-              )}
-              {!isAuth && (
-                <div className="content">
+            <VStack className="router-view">
+              <Box className="page">
+                <Box className="content">
                   <Routes />
-                </div>
-              )}
-            </Box>
+                </Box>
+              </Box>
+              {isAuth && <TabMenu></TabMenu>}
+            </VStack>
           </BrowserRouter>
-        </ThemeProvider>
+        </ChakraProvider>
       </QueryClientProvider>
     </>
   );
